@@ -25,6 +25,10 @@
       apt:
         name: nginx
         state: present
+    - name: Copy html files
+      copy:
+        src: ./nginx/html/
+        dest: /var/www/html/
   handlers:
     - name: restart dnsmasq
       service: name=dnsmasq state=restarted
