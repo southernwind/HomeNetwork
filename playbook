@@ -20,6 +20,11 @@
         dest: /etc/dnsmasq-hosts
       notify:
         - restart dnsmasq
+
+    - name: Install the package "nginx"
+      apt:
+        name: nginx
+        state: present
   handlers:
     - name: restart dnsmasq
       service: name=dnsmasq state=restarted
