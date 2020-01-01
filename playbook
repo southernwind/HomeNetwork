@@ -12,7 +12,14 @@
       copy: 
         src: ./dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
+      notify:
+        - restart dnsmasq
     - name: Copy dmsmasq-hosts
       copy:
         src: ./dnsmasq/dnsmasq-hosts
         dest: /etc/dnsmasq-hosts
+      notify:
+        - restart dnsmasq
+  handlers:
+    - name: restart dnsmasq
+      service: name=dnsmasq state=restarted
