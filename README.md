@@ -19,5 +19,5 @@ Ansibleを使いネットワークまわりの設定を行う。
 
 # 実行
 ```
-ansible-playbook -i inventory playbook
+sh execute.sh
 ```
