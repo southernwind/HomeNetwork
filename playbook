@@ -1,0 +1,18 @@
+- hosts: dhcp
+  become: yes
+  remote_user: pi
+  gather_facts: no
+  tasks: 
+    - name: Install the package "dnsmasq"
+      apt:
+        name: dnsmasq
+        update_cache: yes
+        state: present
+    - name: Copy dmsmasq.conf
+      copy: 
+        src: ./dnsmasq/dnsmasq.conf
+        dest: /etc/dnsmasq.conf
+    - name: Copy dmsmasq-hosts
+      copy:
+        src: ./dnsmasq/dnsmasq-hosts
+        dest: /etc/dnsmasq-hosts
