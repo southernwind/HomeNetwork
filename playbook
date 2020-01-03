@@ -25,10 +25,50 @@
       apt:
         name: nginx
         state: present
-    - name: Copy html files
-      copy:
+    - name: Synchronize html files
+      synchronize:
         src: ./nginx/html/
         dest: /var/www/html/
+        recursive: yes
+        delete: yes
+    - name: Copy nginx.conf
+      copy:
+        src: ./nginx/default.conf
+        dest: /etc/nginx/sites-available/default
+      notify:
+        - restart nginx
+
+    - name: Install the package "php7.3"
+      apt:
+        name: php7.3
+        state: present
+    - name: Install the package "php7.3-fpm"
+      apt:
+        name: php7.3-fpm
+        state: present
+    - name: Copy php-fpm.conf
+      copy:
+        src: ./php/php-fpm.conf
+        dest: /etc/php/7.3/fpm/php-fpm.conf
+      notify:
+        - restart php7.3-fpm
+    - name: Copy php.ini
+      copy:
+        src: ./php/php.ini
+        dest: /etc/php/7.3/fpm/php.ini
+      notify:
+        - restart php7.3-fpm
+    - name: Copy www.conf
+      copy:
+        src: ./php/php.ini
+        dest: /etc/php/7.3/fpm/pool.d/www.conf
+      notify:
+        - restart php7.3-fpm
   handlers:
     - name: restart dnsmasq
       service: name=dnsmasq state=restarted
+    - name: restart nginx
+      service: name=nginx state=restarted
+    - name: restart php7.3-fpm
+      service: name=php7.3-fpm state=restarted
+      

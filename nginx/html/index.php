@@ -6,7 +6,10 @@
     </head>
     <body>
         <div>
-            <a href="./index.txt">DHCPリース状況</a>
+            <a href="./dhcp_leases.php">DHCPリース状況</a>
+        </div>
+        <div>
+            <a href="./phpinfo.php">PHP INFO</a>
         </div>
     </body>
 </html>
