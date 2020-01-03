@@ -8,13 +8,13 @@
         name: dnsmasq
         update_cache: yes
         state: present
-    - name: Copy dmsmasq.conf
+    - name: Copy dnsmasq.conf
       copy: 
         src: ./dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
       notify:
         - restart dnsmasq
-    - name: Copy dmsmasq-hosts
+    - name: Copy dnsmasq-hosts
       copy:
         src: ./dnsmasq/dnsmasq-hosts
         dest: /etc/dnsmasq-hosts
