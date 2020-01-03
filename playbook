@@ -60,7 +60,7 @@
         - restart php7.3-fpm
     - name: Copy www.conf
       copy:
-        src: ./php/php.ini
+        src: ./php/www.conf
         dest: /etc/php/7.3/fpm/pool.d/www.conf
       notify:
         - restart php7.3-fpm
