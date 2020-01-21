@@ -67,6 +67,37 @@
         dest: /etc/php/7.3/fpm/pool.d/www.conf
       notify:
         - restart php7.3-fpm
+    - name: Install the package "python3.7.3-1"
+      apt:
+        name: 
+          - python3-dev=3.7.3-1
+    - name: mkdir /services/dhcp_assign_notifier
+      file: 
+        path: /home/pi/services/dhcp_assign_notifier
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+    - name: Publish dhcp_assign_notifier
+      synchronize:
+        src: ./services/dhcp_assign_notifier/
+        dest: /home/pi/services/dhcp_assign_notifier/
+        recursive: yes
+        delete: yes
+      notify:
+        - restart dhcp_assign_notifier
+    - name: Add services
+      synchronize:
+        src: ./services/init.d/
+        dest: /etc/systemd/system/
+        recursive: yes
+        delete: no
+    - name: Enable dhcp_assign_notifier
+      service:
+        name: dhcp_assign_notifier
+        enabled: yes
+      notify:
+        - restart dhcp_assign_notifier
   handlers:
     - name: restart dnsmasq
       service: name=dnsmasq state=restarted
@@ -74,4 +105,6 @@
       service: name=nginx state=restarted
     - name: restart php7.3-fpm
       service: name=php7.3-fpm state=restarted
+    - name: restart dhcp_assign_notifier
+      service: name=dhcp_assign_notifier state=restarted
       

@@ -1,0 +1,10 @@
+[Unit]
+Description = DhcpAssignNotifier
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/services/dhcp_assign_notifier/dhcp_assign_notifier.py
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

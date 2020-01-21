@@ -1,0 +1,1 @@
+WEBHOOK_URL = None # e.g. "https://hooks.slack.com/services/@@@@@@@@@/@@@@@@@@@@@@@/@@@@@@@@@@@@@@@@"
