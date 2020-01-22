@@ -98,6 +98,22 @@
         enabled: yes
       notify:
         - restart dhcp_assign_notifier
+    - name: mkdir /var/lib/myscripts/
+      file: 
+        path: /var/lib/myscripts/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+    - name:
+      cron:
+        name: oui更新
+        minute: "44"
+        hour: "4"
+        job: "wget https://standards.ieee.org/develop/regauth/oui/oui.csv -O /var/lib/myscripts/oui.csv"
+        state: present
+      notify: 
+        - download oui.csv
   handlers:
     - name: restart dnsmasq
       service: name=dnsmasq state=restarted
@@ -107,4 +123,7 @@
       service: name=php7.3-fpm state=restarted
     - name: restart dhcp_assign_notifier
       service: name=dhcp_assign_notifier state=restarted
-      
+    - name: download oui.csv
+      get_url:
+        url: https://standards.ieee.org/develop/regauth/oui/oui.csv
+        dest: /var/lib/myscripts/oui.csv
