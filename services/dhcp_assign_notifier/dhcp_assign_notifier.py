@@ -21,18 +21,26 @@ def main():
         path = "/var/lib/misc/dnsmasq.leases"
         with open(path, "r") as file:
             lines = file.readlines()
-            # 前回との差分を求める
-            now = [Row(line) for line in lines]
-            if before is not None:
-                added = [nr for nr in now if nr.mac not in [br.mac for br in before]]
-                removed = [br for br in before if br.mac not in [nr.mac for nr in now]]
-                for a in added :
-                    json_post(WEBHOOK_URL, data={"text": f":sunny:DHCP割当通知\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}```"})
-                    
-                for r in removed :
-                    json_post(WEBHOOK_URL, data={"text": f":zzz:DHCP割当解除通知\n```IP={r.ip}\nMAC={r.mac}\nHost={r.host}```"})
-            before = now
-            time.sleep(1)
+        time.sleep(1)
+        with open(path, "r") as file:
+            lines_check = file.readlines()
+        
+        # 不一致の場合、読み取り失敗の可能性があるため、読み込み直す
+        if lines != lines_check:
+            continue
+
+        # 前回との差分を求める
+        now = [Row(line) for line in lines]
+        if before is not None:
+            added = [nr for nr in now if nr.mac not in [br.mac for br in before]]
+            removed = [br for br in before if br.mac not in [nr.mac for nr in now]]
+            for a in added :
+                json_post(WEBHOOK_URL, data={"text": f":sunny:DHCP割当通知\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}```"})
+                
+            for r in removed :
+                json_post(WEBHOOK_URL, data={"text": f":zzz:DHCP割当解除通知\n```IP={r.ip}\nMAC={r.mac}\nHost={r.host}```"})
+        before = now
+        time.sleep(1)
 
 
 if __name__ == "__main__":
