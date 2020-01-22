@@ -88,7 +88,7 @@
         - restart dhcp_assign_notifier
     - name: Add services
       synchronize:
-        src: ./services/init.d/
+        src: ./services/servicefiles/
         dest: /etc/systemd/system/
         recursive: yes
         delete: no
