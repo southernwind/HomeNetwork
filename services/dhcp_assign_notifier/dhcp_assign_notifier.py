@@ -34,11 +34,17 @@ def main():
         if before is not None:
             added = [nr for nr in now if nr.mac not in [br.mac for br in before]]
             removed = [br for br in before if br.mac not in [nr.mac for nr in now]]
-            for a in added :
-                json_post(WEBHOOK_URL, data={"text": f":sunny:DHCP割当通知\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}```"})
-                
-            for r in removed :
-                json_post(WEBHOOK_URL, data={"text": f":zzz:DHCP割当解除通知\n```IP={r.ip}\nMAC={r.mac}\nHost={r.host}```"})
+            text = ""
+            if len(removed) != 0:
+                text += ":zzz:DHCP割当解除通知\n" + "\n".join([f"```IP={r.ip}\nMAC={r.mac}\nHost={r.host}```" for r in removed])
+
+            if len(added) != 0:
+                if len(text) != 0:
+                    text += "\n\n"
+                text += ":sunny:DHCP割当通知\n" + "\n".join([f"\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}```" for a in added])
+            
+            if len(text) != 0:
+                json_post(WEBHOOK_URL, data={"text": text})
         before = now
         time.sleep(1)
 
