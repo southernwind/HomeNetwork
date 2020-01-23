@@ -10,9 +10,9 @@ class Row():
         self.host = s[3]
         self.id = s[4]
 
-    def get_vendor(self, vendor_list):
+    def get_vendorname(self, vendor_list):
         m = self.mac.replace(":","").upper()
-        return next((v for v in vendor_list if m.startswith(v.assignment)), None)
+        return next((v.organization_name for v in vendor_list if m.startswith(v.assignment)), "不明")
 
 class Vendor():
     def __init__(self, csvrow):
@@ -53,12 +53,12 @@ def main():
             removed = [br for br in before if br.mac not in [nr.mac for nr in now]]
             text = ""
             if len(removed) != 0:
-                text += ":zzz:DHCP割当解除通知\n" + "\n".join([f"```IP={r.ip}\nMAC={r.mac}\nHost={r.host}\nVendor={r.get_vendor(vendor_list)}```" for r in removed])
+                text += ":zzz:DHCP割当解除通知\n" + "\n".join([f"```IP={r.ip}\nMAC={r.mac}\nHost={r.host}\nVendor={r.get_vendorname(vendor_list)}```" for r in removed])
 
             if len(added) != 0:
                 if len(text) != 0:
                     text += "\n\n"
-                text += ":sunny:DHCP割当通知\n" + "\n".join([f"\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}\nVendor={a.get_vendor(vendor_list)}```" for a in added])
+                text += ":sunny:DHCP割当通知\n" + "\n".join([f"\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}\nVendor={a.get_vendorname(vendor_list)}```" for a in added])
             
             if len(text) != 0:
                 json_post(WEBHOOK_URL, data={"text": text})
