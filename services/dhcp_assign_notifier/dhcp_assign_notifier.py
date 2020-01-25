@@ -53,12 +53,12 @@ def main():
             removed = [br for br in before if br.mac not in [nr.mac for nr in now]]
             text = ""
             if len(removed) != 0:
-                text += ":zzz:DHCP割当解除通知\n" + "\n".join([f"```IP={r.ip}\nMAC={r.mac}\nHost={r.host}\nVendor={r.get_vendorname(vendor_list)}```" for r in removed])
+                text += ":zzz:DHCP割当解除通知\n" + "\n".join([f"```Host={r.host}\nVendor={r.get_vendorname(vendor_list)}\nIP={r.ip}\nMAC={r.mac}```" for r in removed])
 
             if len(added) != 0:
                 if len(text) != 0:
                     text += "\n\n"
-                text += ":sunny:DHCP割当通知\n" + "\n".join([f"\n```IP={a.ip}\nMAC={a.mac}\nHost={a.host}\nVendor={a.get_vendorname(vendor_list)}```" for a in added])
+                text += ":sunny:DHCP割当通知\n" + "\n".join([f"\n```Host={a.host}\nVendor={a.get_vendorname(vendor_list)}\nIP={a.ip}\nMAC={a.mac}```" for a in added])
             
             if len(text) != 0:
                 json_post(WEBHOOK_URL, data={"text": text})
