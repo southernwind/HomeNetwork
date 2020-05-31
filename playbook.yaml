@@ -13,13 +13,13 @@
         state: present
     - name: Copy dnsmasq.conf
       copy: 
-        src: ./dnsmasq/dnsmasq.conf
+        src: ./raspi_dhcp/dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
       notify:
         - restart dnsmasq
     - name: Copy dnsmasq-hosts
       copy:
-        src: ./dnsmasq/dnsmasq-hosts
+        src: ./raspi_dhcp/dnsmasq/dnsmasq-hosts
         dest: /etc/dnsmasq-hosts
       notify:
         - restart dnsmasq
@@ -30,13 +30,13 @@
         state: present
     - name: Synchronize html files
       synchronize:
-        src: ./nginx/html/
+        src: ./raspi_dhcp/nginx/html/
         dest: /var/www/html/
         recursive: yes
         delete: yes
     - name: Copy nginx.conf
       copy:
-        src: ./nginx/default.conf
+        src: ./raspi_dhcp/nginx/default.conf
         dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
@@ -51,19 +51,19 @@
         state: present
     - name: Copy php-fpm.conf
       copy:
-        src: ./php/php-fpm.conf
+        src: ./raspi_dhcp/php/php-fpm.conf
         dest: /etc/php/7.3/fpm/php-fpm.conf
       notify:
         - restart php7.3-fpm
     - name: Copy php.ini
       copy:
-        src: ./php/php.ini
+        src: ./raspi_dhcp/php/php.ini
         dest: /etc/php/7.3/fpm/php.ini
       notify:
         - restart php7.3-fpm
     - name: Copy www.conf
       copy:
-        src: ./php/www.conf
+        src: ./raspi_dhcp/php/www.conf
         dest: /etc/php/7.3/fpm/pool.d/www.conf
       notify:
         - restart php7.3-fpm
@@ -80,7 +80,7 @@
         mode: 0755
     - name: Publish dhcp_assign_notifier
       synchronize:
-        src: ./services/dhcp_assign_notifier/
+        src: ./raspi_dhcp/services/dhcp_assign_notifier/
         dest: /home/pi/services/dhcp_assign_notifier/
         recursive: yes
         delete: yes
@@ -88,7 +88,7 @@
         - restart dhcp_assign_notifier
     - name: Add services
       synchronize:
-        src: ./services/servicefiles/
+        src: ./raspi_dhcp/services/servicefiles/
         dest: /etc/systemd/system/
         recursive: yes
         delete: no
