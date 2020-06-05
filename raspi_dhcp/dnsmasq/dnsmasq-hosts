@@ -4,6 +4,7 @@
 10.0.0.4 gs108pe.localnet
 10.0.0.5 nas.localnet
 10.0.0.6 nas-management.localnet
+10.0.0.7 home-server.localnet
 10.0.0.9 wxr-5950ax12.localnet
 10.0.0.10 remo1.localnet
 10.0.2.0 9900k.localnet
