@@ -1,8 +1,52 @@
+- hosts: home
+  become: yes
+  remote_user: ubuntu
+  gather_facts: no
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: Asia/Tokyo
+    - name: Download MS product repository
+      get_url:
+        url: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+        dest: /tmp/packages-microsoft-prod.deb
+    - name: Install MS product repository
+      apt:
+        deb: /tmp/packages-microsoft-prod.deb
+    - name: Make sure HTTPS is supported by apt
+      apt:
+        name: apt-transport-https
+        state: present
+        update_cache: no
+    - name: Install .NET Core SDK
+      apt:
+        name: dotnet-sdk-3.1
+        state: present
+        update_cache: yes
+    - name: Install MariaDB
+      apt:
+        name: mariadb-server
+        state: present
+        update_cache: yes
+    - name: Install the package "nginx"
+      apt:
+        name: nginx
+        state: present
+    - name: Copy nginx.conf
+      copy:
+        src: ./home_server/nginx/default.conf
+        dest: /etc/nginx/sites-available/default
+      notify:
+        - restart nginx
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
 - hosts: dhcp
   become: yes
   remote_user: pi
   gather_facts: no
-  tasks: 
+  tasks:
     - name: Set timezone
       timezone:
         name: Asia/Tokyo
@@ -12,7 +56,7 @@
         update_cache: yes
         state: present
     - name: Copy dnsmasq.conf
-      copy: 
+      copy:
         src: ./raspi_dhcp/dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
       notify:
@@ -69,10 +113,10 @@
         - restart php7.3-fpm
     - name: Install the package "python3.7.3-1"
       apt:
-        name: 
+        name:
           - python3-dev=3.7.3-1
     - name: mkdir /services/dhcp_assign_notifier
-      file: 
+      file:
         path: /home/pi/services/dhcp_assign_notifier
         state: directory
         owner: pi
@@ -99,7 +143,7 @@
       notify:
         - restart dhcp_assign_notifier
     - name: mkdir /var/lib/myscripts/
-      file: 
+      file:
         path: /var/lib/myscripts/
         state: directory
         owner: root
@@ -112,7 +156,7 @@
         hour: "4"
         job: "wget https://standards.ieee.org/develop/regauth/oui/oui.csv -O /var/lib/myscripts/oui.csv"
         state: present
-      notify: 
+      notify:
         - download oui.csv
   handlers:
     - name: restart dnsmasq
