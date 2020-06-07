@@ -28,6 +28,31 @@
         name: mariadb-server
         state: present
         update_cache: yes
+    - name: Install pymysql
+      apt:
+        name: python3-pymysql
+        state: present
+        update_cache: yes
+    - name: create mariadb databases
+      mysql_db:
+        login_user: ubuntu
+        login_password: "{{ mysql.ubuntu.password }}"
+        name: "{{ item.name }}"
+        state: present
+        encoding: utf8mb4
+      with_items:
+        - "{{ mysql.databases }}"
+    - name: create mariadb users
+      mysql_user:
+        login_user: ubuntu
+        login_password: "{{ mysql.ubuntu.password }}"
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        priv: "{{ item.priv }}"
+        host: "%"
+        state: present
+      with_items:
+        - "{{ mysql.users }}"
     - name: Install the package "nginx"
       apt:
         name: nginx
@@ -38,6 +63,13 @@
         dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
+    - name:
+      cron:
+        name: 財務情報定期更新
+        minute: "*/10"
+        hour: "*"
+        job: 'curl --location --request POST ''https://localhost/api/financial-api/PostUpdateRequest'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}'''
+        state: present
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
