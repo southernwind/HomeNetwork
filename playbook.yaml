@@ -63,17 +63,30 @@
         dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
-    - name:
+    - name: Add cron config financial information update request
       cron:
         name: 財務情報定期更新
         minute: "*/10"
         hour: "*"
         job: 'curl --location --request POST ''https://localhost/api/financial-api/PostUpdateRequest'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}'''
         state: present
+    - name: Add back end api service
+      copy:
+        src: ./home_server/services/servicefiles/back_end_api.service
+        dest: /etc/systemd/system/back_end_api.service
+      notify:
+        - restart back end api service
+    - name: Enable back end api service
+      service:
+        name: back_end_api
+        enabled: yes
+      notify:
+        - restart back end api service
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
-
+    - name: restart back end api service
+      service: name=back_end_api state=restarted
 - hosts: dhcp
   become: yes
   remote_user: pi

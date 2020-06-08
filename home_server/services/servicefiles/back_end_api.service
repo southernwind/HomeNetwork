@@ -1,0 +1,11 @@
+[Unit]
+Description = Back End Api Server
+
+[Service]
+WorkingDirectory=/var/www/html/api
+ExecStart=dotnet /var/www/html/api/Back.dll
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
