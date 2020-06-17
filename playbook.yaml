@@ -68,7 +68,7 @@
         name: 財務情報定期更新
         minute: "*/10"
         hour: "*"
-        job: 'curl --location --request POST ''https://localhost/api/financial-api/PostUpdateRequest'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}'''
+        job: 'curl --location --request POST ''http://home-server.localnet/api/financial-api/post-update-by-span-request'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}'''
         state: present
     - name: Add back end api service
       copy:
