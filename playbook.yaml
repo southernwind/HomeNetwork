@@ -82,6 +82,17 @@
         enabled: yes
       notify:
         - restart back end api service
+    - name: Install the package "wakeonlan"
+      apt:
+        name: wakeonlan
+        state: present
+    - name:
+      cron:
+        name: oui更新
+        minute: "44"
+        hour: "4"
+        job: "curl --location --request POST 'http://home-server.localnet/api/network-api/post-update-vendor-list-request' --header 'Content-Type: application/json'"
+        state: present
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted

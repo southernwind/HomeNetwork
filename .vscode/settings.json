@@ -9,6 +9,7 @@
         "pymysql",
         "raspi",
         "servicefiles",
-        "systemd"
+        "systemd",
+        "wakeonlan"
     ]
 }
