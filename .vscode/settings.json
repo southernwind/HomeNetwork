@@ -3,12 +3,15 @@
         "ansible",
         "dnsmasq",
         "fqdn",
+        "gpio",
         "mariadb",
         "mkdir",
+        "modprobe",
         "myscripts",
         "pymysql",
         "raspi",
         "servicefiles",
+        "setuptools",
         "systemd",
         "wakeonlan"
     ]

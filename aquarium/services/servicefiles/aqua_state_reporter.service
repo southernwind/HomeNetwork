@@ -1,0 +1,10 @@
+[Unit]
+Description = Aqua State Reporter
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/services/aqua_state_reporter/aqua_state_reporter.py
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
