@@ -28,6 +28,30 @@
         name: mariadb-server
         state: present
         update_cache: yes
+    - name: Install Java11
+      apt:
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
+    - name: Import the GPG keys of the Jenkins repository
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+    - name: Add the Jenkins repository to the system
+      lineinfile:
+        path: /etc/apt/sources.list.d/jenkins.list
+        state: present
+        owner: root
+        group: root
+        mode: "0644"
+        create: yes
+        line: "deb http://pkg.jenkins.io/debian-stable binary/"
+    - name: Install jenkins
+      apt:
+        force_apt_get: yes
+        name: jenkins
+        state: present
+        update_cache: yes
     - name: Install pymysql
       apt:
         name: python3-pymysql
