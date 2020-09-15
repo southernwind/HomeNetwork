@@ -3,18 +3,18 @@
 
 [dhcp:vars]
 ansible_user=pi
-ansible_ssh_private_key_file=raspi_dhcp/ssh_keys/raspberrypi.key
+ansible_ssh_private_key_file=./raspi_dhcp/ssh_keys/raspberrypi.key
 
 [home]
 home-server.localnet
 
 [home:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=home_server/ssh_keys/ubuntu.key
+ansible_ssh_private_key_file=./home_server/ssh_keys/ubuntu.key
 
 [aquarium]
 aqua-raspi.localnet
 
 [aquarium:vars]
 ansible_user=pi
-ansible_ssh_private_key_file=aquarium/ssh_keys/aquapi.key
+ansible_ssh_private_key_file=./aquarium/ssh_keys/aquapi.key

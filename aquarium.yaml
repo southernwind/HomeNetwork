@@ -1,0 +1,52 @@
+- hosts: aquarium
+  become: yes
+  remote_user: pi
+  gather_facts: no
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: Asia/Tokyo
+    - name: Add the w1-therm,w1-gpio module
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - [w1-therm, w1-gpio]
+    - name: Install the package "python3.7.3-1", "python3-pip", "git"
+      apt:
+        name:
+          - python3-dev=3.7.3-1
+          - python3-pip
+          - git
+        state: present
+        update_cache: no
+    - name: mkdir /services/aqua_state_reporter
+      file:
+        path: /home/pi/services/
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+    - name: Publish aqua_state_reporter
+      synchronize:
+        src: ./aquarium/services/aqua_state_reporter/
+        dest: /home/pi/services/aqua_state_reporter/
+        recursive: yes
+        delete: yes
+      notify:
+        - restart aqua_state_reporter
+    - name: Add services
+      synchronize:
+        src: ./aquarium/services/servicefiles/
+        dest: /etc/systemd/system/
+        recursive: yes
+        delete: no
+    - name: Enable aqua_state_reporter
+      service:
+        name: aqua_state_reporter
+        enabled: yes
+      notify:
+        - restart aqua_state_reporter
+  handlers:
+    - name: restart aqua_state_reporter
+      service: name=aqua_state_reporter state=restarted
