@@ -1,0 +1,8 @@
+[dhcp]
+10.0.0.2
+
+[home]
+home-server.localnet
+
+[aquarium]
+aqua-raspi.localnet

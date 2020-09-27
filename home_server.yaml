@@ -52,6 +52,11 @@
         name: jenkins
         state: present
         update_cache: yes
+    - name: Install Ansible
+      apt:
+        name: ansible
+        state: present
+        update_cache: yes
     - name: Install pymysql
       apt:
         name: python3-pymysql

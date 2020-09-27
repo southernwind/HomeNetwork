@@ -62,7 +62,7 @@ SlackにDHCP割当通知を行うための設定を行う。
     - 公開鍵認証でpiユーザーにログインできるようにする。
         * RaspberryPiの/.ssh/authorized_keysに公開鍵を保存する。
         * Ansibleを実行する側の./aquarium/ssh_keys/aquapi.keyに秘密鍵を保存する。(OpenSSH形式)
-# 実行
+# 実行 (初回のみ。2回目以降はGitHubにpushするとJenkinsが実施してくれる。)
 ```
 sh execute.sh
 ```
@@ -74,3 +74,4 @@ sh execute.sh
     cd Adafruit_Python_DHT
     sudo python3 setup.py install
     ```
+ - Jenkinsにパイプライン構築
