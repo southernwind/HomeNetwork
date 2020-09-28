@@ -1,10 +1,12 @@
 {
     "cSpell.words": [
+        "DDNS",
         "ansible",
         "dnsmasq",
         "fqdn",
         "gpio",
         "mariadb",
+        "mihome",
         "mkdir",
         "modprobe",
         "myscripts",

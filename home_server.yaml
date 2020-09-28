@@ -122,6 +122,13 @@
         hour: "4"
         job: "curl --location --request POST 'http://home-server.localnet/api/network-api/post-update-vendor-list-request' --header 'Content-Type: application/json'"
         state: present
+    - name: Add cron config update dynamic dns record
+      cron:
+        name: Dynamic DNS更新Cron
+        minute: "*"
+        hour: "*"
+        job: 'curl "https://f5.si/update.php?domain={{ddns.domain}}&password={{ddns.token}}"'
+        state: present
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
