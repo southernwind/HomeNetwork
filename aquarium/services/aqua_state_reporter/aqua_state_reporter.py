@@ -55,6 +55,10 @@ def report(dt, water_temperature, humidity, temperature):
 def main():
     getter = Getter()
     before = -1
+    beforeWt = None
+    beforeHumidity = None
+    beforeTemperature = None
+    retryFlag = False
     while True:
         dt = datetime.datetime.now()
         t = int(float(dt.second) / 10)
@@ -64,8 +68,16 @@ def main():
         try:
             wt = getter.get_water_temperature()
             humidity, temperature = getter.get_temperature_and_humidity()
+            if((not retryFlag) and beforeWt != None and (abs(beforeWt - wt) > 5 or abs(beforeHumidity - humidity) > 5 or abs(beforeTemperature - temperature) > 5)):
+                retryFlag = True
+                time.sleep(1)
+                continue
             report(dt,wt,humidity,temperature)
             before = t
+            beforeWt = wt
+            beforeHumidity = humidity
+            beforeTemperature = temperature
+            retryFlag = False
         except  Exception as e:
             print(e)
             time.sleep(1)
