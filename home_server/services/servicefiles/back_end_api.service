@@ -2,8 +2,8 @@
 Description = Back End Api Server
 
 [Service]
-WorkingDirectory=/var/www/html/api
-ExecStart=dotnet /var/www/html/api/Back.dll
+WorkingDirectory=/var/www/html/dashboard-api
+ExecStart=dotnet /var/www/html/dashboard-api/Back.dll
 Restart=always
 Type=simple
 
