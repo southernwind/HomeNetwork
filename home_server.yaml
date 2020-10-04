@@ -111,18 +111,6 @@
         enabled: yes
       notify:
         - restart back end api service
-    - name: Add smart mater reader service
-      copy:
-        src: ./home_server/services/servicefiles/smart_mater_reader.service
-        dest: /etc/systemd/system/smart_mater_reader.service
-      notify:
-        - restart smart mater reader service
-    - name: Enable smart mater reader service
-      service:
-        name: smart_mater_reader
-        enabled: yes
-      notify:
-        - restart smart mater reader service
     - name: Install the package "wakeonlan"
       apt:
         name: wakeonlan
@@ -146,5 +134,3 @@
       service: name=nginx state=restarted
     - name: restart back end api service
       service: name=back_end_api state=restarted
-    - name: restart smart mater reader service
-      service: name=smart_mater_reader state=restarted
