@@ -1,0 +1,11 @@
+[Unit]
+Description = Smart mater reader
+
+[Service]
+WorkingDirectory=/usr/bin/smart-mater-reader
+ExecStart=dotnet /usr/bin/smart-mater-reader/SmartMaterReader.dll
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
