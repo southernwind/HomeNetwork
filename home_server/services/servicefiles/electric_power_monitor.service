@@ -1,0 +1,11 @@
+[Unit]
+Description = Electric Power Monitor Service
+
+[Service]
+WorkingDirectory=/opt/electric-power-monitor-service
+ExecStart=dotnet /opt/electric-power-monitor-service/ElectricPowerMonitorService.dll
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

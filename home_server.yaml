@@ -6,6 +6,15 @@
     - name: Set timezone
       timezone:
         name: Asia/Tokyo
+    - name: nginx location config file directory
+      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode=0755
+      with_items:
+        - {
+            path: /opt/electric-power-monitor-service,
+            state: directory,
+            owner: root,
+            group: root,
+          }
     - name: Download MS product repository
       get_url:
         url: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
@@ -111,6 +120,18 @@
         enabled: yes
       notify:
         - restart back end api service
+    - name: Add electric power monitor service
+      copy:
+        src: ./home_server/services/servicefiles/electric_power_monitor.service
+        dest: /etc/systemd/system/electric_power_monitor.service
+      notify:
+        - restart electric power monitor service
+    - name: Enable electric power monitor service
+      service:
+        name: electric_power_monitor
+        enabled: yes
+      notify:
+        - restart electric power monitor service
     - name: Install the package "wakeonlan"
       apt:
         name: wakeonlan
@@ -134,3 +155,5 @@
       service: name=nginx state=restarted
     - name: restart back end api service
       service: name=back_end_api state=restarted
+    - name: restart electric power monitor service
+      service: name=electric_power_monitor state=restarted
