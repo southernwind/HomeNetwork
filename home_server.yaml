@@ -22,26 +22,6 @@
     - name: Install MS product repository
       apt:
         deb: /tmp/packages-microsoft-prod.deb
-    - name: Make sure HTTPS is supported by apt
-      apt:
-        name: apt-transport-https
-        state: present
-        update_cache: no
-    - name: Install .NET Core SDK
-      apt:
-        name: dotnet-sdk-3.1
-        state: present
-        update_cache: yes
-    - name: Install MariaDB
-      apt:
-        name: mariadb-server
-        state: present
-        update_cache: yes
-    - name: Install Java11
-      apt:
-        name: openjdk-11-jdk
-        state: present
-        update_cache: yes
     - name: Import the GPG keys of the Jenkins repository
       apt_key:
         url: https://pkg.jenkins.io/debian/jenkins.io.key
@@ -55,22 +35,21 @@
         mode: "0644"
         create: yes
         line: "deb http://pkg.jenkins.io/debian-stable binary/"
-    - name: Install jenkins
+    - name: Install apt packages
       apt:
-        force_apt_get: yes
-        name: jenkins
+        name: "{{ item }}"
         state: present
-        update_cache: yes
-    - name: Install Ansible
-      apt:
-        name: ansible
-        state: present
-        update_cache: yes
-    - name: Install pymysql
-      apt:
-        name: python3-pymysql
-        state: present
-        update_cache: yes
+        update_cache: no
+      with_items:
+        - apt-transport-https
+        - dotnet-sdk-5.0
+        - mariadb-server
+        - openjdk-11-jdk
+        - jenkins
+        - ansible
+        - python3-pymysql
+        - nginx
+        - wakeonlan
     - name: create mariadb databases
       mysql_db:
         login_user: ubuntu
@@ -91,23 +70,38 @@
         state: present
       with_items:
         - "{{ mysql.users }}"
-    - name: Install the package "nginx"
-      apt:
-        name: nginx
-        state: present
     - name: Copy nginx.conf
       copy:
         src: ./home_server/nginx/default.conf
         dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
-    - name: Add cron config financial information update request
+    - name: Add cron jobs
       cron:
-        name: 財務情報定期更新
-        minute: "*/10"
-        hour: "*"
-        job: 'curl --location --request POST ''http://dashboard-api.home-server.localnet/api/financial-api/post-update-by-span-request'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}'''
+        name: "{{ item.name }}"
+        minute: "{{ item.minute }}"
+        hour: "{{ item.hour }}"
+        job: "{{ item.job }}"
         state: present
+      with_items:
+        - {
+            name: 財務情報定期更新,
+            minute: "*/10",
+            hour: "*",
+            job: 'curl --location --request POST ''http://dashboard-api.home-server.localnet/api/financial-api/post-update-by-span-request'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}''',
+          }
+        - {
+            name: oui更新,
+            minute: "44",
+            hour: "4",
+            job: "curl --location --request POST 'http://dashboard-api.home-server.localnet/api/network-api/post-update-vendor-list-request' --header 'Content-Type: application/json'",
+          }
+        - {
+            name: Dynamic DNS更新Cron,
+            minute: "*",
+            hour: "*",
+            job: 'curl "https://f5.si/update.php?domain={{ddns.domain}}&password={{ddns.token}}"',
+          }
     - name: Add back end api service
       copy:
         src: ./home_server/services/servicefiles/back_end_api.service
@@ -132,24 +126,6 @@
         enabled: yes
       notify:
         - restart electric power monitor service
-    - name: Install the package "wakeonlan"
-      apt:
-        name: wakeonlan
-        state: present
-    - name:
-      cron:
-        name: oui更新
-        minute: "44"
-        hour: "4"
-        job: "curl --location --request POST 'http://dashboard-api.home-server.localnet/api/network-api/post-update-vendor-list-request' --header 'Content-Type: application/json'"
-        state: present
-    - name: Add cron config update dynamic dns record
-      cron:
-        name: Dynamic DNS更新Cron
-        minute: "*"
-        hour: "*"
-        job: 'curl "https://f5.si/update.php?domain={{ddns.domain}}&password={{ddns.token}}"'
-        state: present
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
