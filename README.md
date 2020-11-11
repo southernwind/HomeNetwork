@@ -75,3 +75,12 @@ sh execute.sh
     sudo python3 setup.py install
     ```
  - Jenkinsにパイプライン構築
+ - jenkinsでデプロイ、ansible実行が出来るよう、HomeServerのknown_hostsにfingerprintを登録していく
+    ```
+    su jenkins
+    ssh 10.0.0.2
+    ssh home-server.localnet
+    ssh aquaraspi.localnet
+    ssh raspi.localnet
+    ssh ...全ホストやる
+    ```
