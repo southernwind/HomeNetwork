@@ -8,10 +8,14 @@
 10.0.0.9 wxr-5950ax12.localnet
 10.0.0.10 remo1.localnet
 10.0.0.11 aqua-raspi.localnet
+10.0.0.12 Google-Home.localnet
 10.0.2.0 9900k.localnet
-10.0.2.1 hyper-v.localnet
-10.0.2.2 kitchen.localnet
-10.0.2.3 Google-Home.localnet
+10.0.2.1 9900k-2.localnet
+10.0.2.2 hyper-v.localnet
+10.0.2.3 9700k.localnet
+10.0.2.4 kitchen.localnet
+10.0.2.5 latitude7390.localnet
+10.0.2.6 surface-pro4.localnet
 10.0.3.1 home-server.localnet
 10.0.3.2 database-server.localnet
 10.0.3.20 game-server0.localnet
