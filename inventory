@@ -18,3 +18,17 @@ aqua-raspi.localnet
 [aquarium:vars]
 ansible_user=pi
 ansible_ssh_private_key_file=./aquarium/ssh_keys/aquapi.key
+
+[game0]
+game-server0.localnet
+
+[game0:vars]
+ansible_user=game0
+ansible_ssh_private_key_file=./game_server0/ssh_keys/game_server0.key
+
+[database]
+database-server.localnet
+
+[database:vars]
+ansible_user=database
+ansible_ssh_private_key_file=./database_server/ssh_keys/database_server.key

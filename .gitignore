@@ -1,1 +1,1 @@
-group_vars/home.yaml
+group_vars/*.yaml

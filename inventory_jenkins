@@ -6,3 +6,9 @@ home-server.localnet
 
 [aquarium]
 aqua-raspi.localnet
+
+[game0]
+game-server0.localnet
+
+[database]
+database-server.localnet
