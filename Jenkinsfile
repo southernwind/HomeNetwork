@@ -4,6 +4,7 @@ node {
   }
 
   stage('Configuration'){
+    configFileProvider([configFile(fileId: 'a387649d-770b-40b3-8863-8dc851c476a0', targetLocation: 'raspi_dhcp/services/dhcp_assign_notifier/constants.py')]) {}
     configFileProvider([configFile(fileId: 'c2d55a3f-ec4b-45c3-8b3f-ff15ed21ba3f', targetLocation: 'group_vars/home.yaml')]) {}
     configFileProvider([configFile(fileId: '937aec52-0ffe-4840-b3a8-f725ce16b8ec', targetLocation: 'group_vars/database.yaml')]) {}
     configFileProvider([configFile(fileId: '3038edd3-29b5-47e5-baf2-acc19a0f4dae', targetLocation: 'group_vars/game0.yaml')]) {}

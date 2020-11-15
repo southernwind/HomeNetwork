@@ -1,5 +1,5 @@
 import urllib.request,json,time,csv
-from common.constants import *
+from constants import *
 
 class Row():
     def __init__(self, line): 
