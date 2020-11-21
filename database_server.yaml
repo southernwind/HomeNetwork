@@ -51,3 +51,17 @@
             hour: "*",
             job: "mysqldump -uroot -p{{ mysql.root.password }} -A --ignore-table=mysql.* --ignore-table=information_schema.* --ignore-table=performance_schema.* --extended-insert --single-transaction > database.dump",
           }
+    - name: Copy config files
+      copy:
+        src: "{{ item.src}}"
+        dest: "{{ item.dest }}"
+      notify:
+        - restart mariadb
+      with_items:
+        - {
+            src: ./database_server/mariadb/50-server.cnf,
+            dest: /etc/mysql/mariadb.conf.d/50-server.cnf,
+          }
+  handlers:
+    - name: restart mariadb
+      service: name=mariadb state=restarted
