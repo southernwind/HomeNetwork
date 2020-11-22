@@ -1,6 +1,6 @@
 - hosts: home
   become: yes
-  remote_user: ubuntu
+  remote_user: home
   gather_facts: no
   tasks:
     - name: Set timezone
@@ -43,39 +43,16 @@
         line: "deb http://pkg.jenkins.io/debian-stable binary/"
     - name: Install apt packages
       apt:
-        name: "{{ item }}"
+        name:
+          - apt-transport-https
+          - dotnet-sdk-5.0
+          - openjdk-11-jdk
+          - jenkins
+          - ansible
+          - nginx
+          - wakeonlan
         state: present
-        update_cache: no
-      with_items:
-        - apt-transport-https
-        - dotnet-sdk-5.0
-        - mariadb-server
-        - openjdk-11-jdk
-        - jenkins
-        - ansible
-        - python3-pymysql
-        - nginx
-        - wakeonlan
-    - name: create mariadb databases
-      mysql_db:
-        login_user: ubuntu
-        login_password: "{{ mysql.ubuntu.password }}"
-        name: "{{ item.name }}"
-        state: present
-        encoding: utf8mb4
-      with_items:
-        - "{{ mysql.databases }}"
-    - name: create mariadb users
-      mysql_user:
-        login_user: ubuntu
-        login_password: "{{ mysql.ubuntu.password }}"
-        name: "{{ item.name }}"
-        password: "{{ item.password }}"
-        priv: "{{ item.priv }}"
-        host: "%"
-        state: present
-      with_items:
-        - "{{ mysql.users }}"
+        update_cache: yes
     - name: Copy nginx.conf
       copy:
         src: ./home_server/nginx/default.conf
