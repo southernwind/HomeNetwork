@@ -1,0 +1,31 @@
+- hosts: watch
+  become: yes
+  remote_user: watch
+  gather_facts: no
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: Asia/Tokyo
+    - name: mkdir
+      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode=0755
+      with_items:
+        - {
+            path: /home/watch/docker,
+            state: directory,
+            owner: watch,
+            group: watch,
+          }
+    - name: Copy docker files
+      copy:
+        src: ./watch_server/docker/
+        dest: /home/watch/docker/
+    - name: Install apt packages
+      apt:
+        name:
+          - docker-compose
+        state: present
+        update_cache: no
+    - name: docker-compose
+      docker_compose:
+        project_src: /home/watch/docker
+        state: present

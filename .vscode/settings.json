@@ -3,8 +3,11 @@
         "DDNS",
         "ansible",
         "dnsmasq",
+        "entrypoint",
         "fqdn",
         "gpio",
+        "initdb",
+        "localnet",
         "mariadb",
         "mihome",
         "mkdir",
@@ -12,9 +15,11 @@
         "myscripts",
         "pymysql",
         "raspi",
+        "rsync",
         "servicefiles",
         "setuptools",
         "systemd",
-        "wakeonlan"
+        "wakeonlan",
+        "zabbix"
     ]
 }

@@ -26,9 +26,16 @@ game-server0.localnet
 ansible_user=game0
 ansible_ssh_private_key_file=./game_server0/ssh_keys/game_server0.key
 
-[database]
-database-server.localnet
+[db]
+db-server.localnet
 
-[database:vars]
-ansible_user=database
-ansible_ssh_private_key_file=./database_server/ssh_keys/database_server.key
+[db:vars]
+ansible_user=db
+ansible_ssh_private_key_file=./db_server/ssh_keys/db_server.key
+
+[watch]
+watch-server.localnet
+
+[watch:vars]
+ansible_user=watch
+ansible_ssh_private_key_file=./watch_server/ssh_keys/watch_server.key

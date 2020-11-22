@@ -17,5 +17,6 @@
 10.0.2.5 latitude7390.localnet
 10.0.2.6 surface-pro4.localnet
 10.0.3.1 home-server.localnet
-10.0.3.2 database-server.localnet
+10.0.3.2 db-server.localnet
+10.0.3.3 watch-server.localnet
 10.0.3.20 game-server0.localnet

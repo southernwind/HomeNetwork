@@ -66,7 +66,7 @@ SlackにDHCP割当通知を行うための設定を行う。
 # KVMゲストたち
 1. ゲストを作ってUbuntu20.04をインストールする。
 1. SSH接続出来るよう公開鍵を登録する。
-1. この手順をHomeServer,GameServer0,DatabaseServerの3つ分やっておく
+1. この手順をHomeServer,GameServer0,DbServer,WatchServerの4つ分やっておく
 
 # 実行 (初回のみ。2回目以降はGitHubにpushするとJenkinsが実施してくれる。)
 ```
@@ -89,10 +89,4 @@ sh execute.sh
     ssh aquaraspi.localnet
     ssh raspi.localnet
     ssh ...全ホストやる
-    ```
- - 一回目はDatabaseServerのAnsible失敗するので、失敗したらdatabaseユーザーを作ってGrant権限をつける。
-    ```
-    CREATE USER "database" identified by '{password}';
-    GRANT ALL ON *.* TO "database";
-    GRANT GRANT OPTION ON *.* TO "database";
     ```

@@ -1,0 +1,75 @@
+- hosts: db
+  become: yes
+  remote_user: db
+  gather_facts: no
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: Asia/Tokyo
+    - name: apt update
+      apt:
+        update_cache: yes
+    - name: mkdir
+      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode=0755
+      with_items:
+        - { path: /home/db/docker, state: directory, owner: db, group: db }
+        - { path: /root/shell/, state: directory, owner: root, group: root }
+    - name: Copy docker files
+      copy:
+        src: ./db_server/docker/
+        dest: /home/db/docker/
+    - name: Copy shell files
+      copy:
+        src: ./db_server/shell/
+        dest: /root/shell/
+    - name: Install apt packages
+      apt:
+        name:
+          - docker-compose
+          - mariadb-client-10.3
+          - python3-pymysql
+        state: present
+        update_cache: yes
+    - name: docker-compose
+      docker_compose:
+        project_src: /home/db/docker
+        state: present
+    - name: create mariadb databases
+      mysql_db:
+        login_user: root
+        login_password: "{{ mysql.root.password }}"
+        login_host: "127.0.0.1"
+        name: "{{ item.name }}"
+        state: present
+        encoding: utf8mb4
+      with_items:
+        - "{{ mysql.databases }}"
+    - name: create mariadb users
+      mysql_user:
+        login_user: root
+        login_password: "{{ mysql.root.password }}"
+        login_host: "127.0.0.1"
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        priv: "{{ item.priv }}"
+        host: "%"
+        state: present
+      with_items:
+        - "{{ mysql.users }}"
+    - name: Add cron jobs
+      cron:
+        name: "{{ item.name }}"
+        minute: "{{ item.minute }}"
+        hour: "{{ item.hour }}"
+        job: "{{ item.job }}"
+        state: present
+      with_items:
+        - {
+            name: データベースバックアップ,
+            minute: "34",
+            hour: "*",
+            job: "/root/shell/backup.sh {{ mysql.root.password }} {{backup_server.rsync.host}}",
+          }
+  handlers:
+    - name: restart mariadb
+      service: name=mariadb state=restarted

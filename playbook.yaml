@@ -6,5 +6,7 @@
   import_playbook: ./aquarium.yaml
 - name: game_server0
   import_playbook: ./game_server0.yaml
-- name: database_server
-  import_playbook: ./database_server.yaml
+- name: db_server
+  import_playbook: ./db_server.yaml
+- name: watch_server
+  import_playbook: ./watch_server.yaml

@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  zabbix-server:
+    build: ./zabbix-server
+    env_file:
+      - ./zabbix-server/env_file
+    ports:
+      - 10051:10051
+    volumes:
+      - ./zabbix-server/mibs:/var/lib/zabbix/mibs
+  zabbix-web:
+    build: ./zabbix-web
+    env_file:
+      - ./zabbix-web/env_file
+    ports:
+      - 8080:8080
+  zabbix-java-gateway:
+    build: ./zabbix-java-gateway
+  zabbix-agent:
+    build: ./zabbix-agent
+    ports:
+      - 10050:10050

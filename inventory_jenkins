@@ -10,5 +10,8 @@ aqua-raspi.localnet
 [game0]
 game-server0.localnet
 
-[database]
-database-server.localnet
+[db]
+db-server.localnet
+
+[watch]
+watch-server.localnet

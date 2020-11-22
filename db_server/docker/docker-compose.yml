@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  mariadb:
+    build: ./mariadb
+    ports:
+      - 3306:3306
+    env_file:
+      - ./mariadb/env_file
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
