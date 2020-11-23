@@ -91,6 +91,12 @@
             hour: "*",
             job: 'curl "https://f5.si/update.php?domain={{ddns.domain}}&password={{ddns.token}}"',
           }
+        - {
+            name: jenkins backup,
+            minute: "51",
+            hour: "13",
+            job: "rsync /var/lib/jenkins/backup rsync://{{ backup_server.rsync.host }}/jenkins_backup -r",
+          }
     - name: Add back end api service
       copy:
         src: ./home_server/services/servicefiles/back_end_api.service

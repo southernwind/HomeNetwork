@@ -68,7 +68,7 @@
             name: データベースバックアップ,
             minute: "34",
             hour: "*",
-            job: "/root/shell/backup.sh {{ mysql.root.password }} {{backup_server.rsync.host}}",
+            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }}",
           }
   handlers:
     - name: restart mariadb
