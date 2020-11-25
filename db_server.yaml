@@ -65,10 +65,25 @@
         state: present
       with_items:
         - {
-            name: データベースバックアップ,
+            name: 日次データベースバックアップ,
             minute: "34",
             hour: "*",
-            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }}",
+            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %d",
+          }
+        - {
+            name: 月次データベースバックアップ,
+            minute: "10",
+            hour: "15",
+            day: "1",
+            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %m%d",
+          }
+        - {
+            name: 年次データベースバックアップ,
+            minute: "34",
+            hour: "19",
+            day: "1",
+            month: "1",
+            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %Y%m%d",
           }
   handlers:
     - name: restart mariadb
