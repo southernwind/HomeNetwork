@@ -7,13 +7,21 @@
       timezone:
         name: Asia/Tokyo
     - name: mkdir
-      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode=0755
+      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
       with_items:
         - {
             path: /home/watch/docker,
             state: directory,
             owner: watch,
             group: watch,
+            mode: "0755",
+          }
+        - {
+            path: /home/watch/docker/data/grafana,
+            state: directory,
+            owner: watch,
+            group: watch,
+            mode: "0777",
           }
     - name: Copy docker files
       copy:

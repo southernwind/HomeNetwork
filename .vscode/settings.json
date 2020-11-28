@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
         "DDNS",
+        "alexanderzobnin",
         "ansible",
         "dnsmasq",
         "entrypoint",
         "fqdn",
         "gpio",
+        "grafana",
         "initdb",
         "localnet",
         "mariadb",

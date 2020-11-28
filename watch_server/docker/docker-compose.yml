@@ -18,3 +18,11 @@ services:
       - 8080:8080
   zabbix-java-gateway:
     build: ./zabbix-java-gateway
+  grafana:
+    build: ./grafana
+    environment:
+      GF_INSTALL_PLUGINS: alexanderzobnin-zabbix-app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data/grafana:/var/lib/grafana
