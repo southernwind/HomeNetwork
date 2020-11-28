@@ -26,3 +26,5 @@ services:
       - 3000:3000
     volumes:
       - ./data/grafana:/var/lib/grafana
+  rsyslog:
+    build: ./rsyslog
