@@ -12,7 +12,6 @@ node {
     configFileProvider([configFile(fileId: '07960749-1250-4882-8653-b3127500f143', targetLocation: 'db_server/docker/mariadb/env_file')]) {}
     configFileProvider([configFile(fileId: '175e94a1-29f4-4133-a270-b42f8cb6a7b8', targetLocation: 'watch_server/docker/zabbix-server/env_file')]) {}
     configFileProvider([configFile(fileId: '0deaffda-78a8-4e02-86ad-1d963b074f72', targetLocation: 'watch_server/docker/zabbix-web/env_file')]) {}
-    configFileProvider([configFile(fileId: 'b90dbbbd-830c-4c6a-8931-63b81034ef5f', targetLocation: 'watch_server/docker/zabbix-agent/env_file')]) {}
   }
 
   stage('Ansible raspi_dhcp'){
