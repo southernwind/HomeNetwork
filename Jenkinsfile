@@ -9,6 +9,7 @@ node {
     configFileProvider([configFile(fileId: '937aec52-0ffe-4840-b3a8-f725ce16b8ec', targetLocation: 'group_vars/db.yaml')]) {}
     configFileProvider([configFile(fileId: '3038edd3-29b5-47e5-baf2-acc19a0f4dae', targetLocation: 'group_vars/game0.yaml')]) {}
     configFileProvider([configFile(fileId: '00822a4e-2506-42a6-ab2f-320c805c8cdc', targetLocation: 'group_vars/watch.yaml')]) {}
+    configFileProvider([configFile(fileId: '007d1ea8-f543-45a2-b446-b52b3af1a3c5', targetLocation: 'home_server/nginx/sites-available/external')]) {}
     configFileProvider([configFile(fileId: '07960749-1250-4882-8653-b3127500f143', targetLocation: 'db_server/docker/mariadb/env_file')]) {}
     configFileProvider([configFile(fileId: 'f8b32646-b514-45e4-8871-df5aa7d403b6', targetLocation: 'db_server/copy/root/.my.cnf')]) {}
     configFileProvider([configFile(fileId: '175e94a1-29f4-4133-a270-b42f8cb6a7b8', targetLocation: 'watch_server/docker/zabbix-server/env_file')]) {}

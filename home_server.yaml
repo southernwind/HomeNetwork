@@ -61,10 +61,15 @@
         update_cache: yes
     - name: Copy nginx.conf
       copy:
-        src: ./home_server/nginx/default.conf
-        dest: /etc/nginx/sites-available/default
+        src: ./home_server/nginx/sites-available/
+        dest: /etc/nginx/sites-available/
       notify:
         - restart nginx
+    - name: Create symbolic link
+      file:
+        src: /etc/nginx/sites-available/external
+        dest: /etc/nginx/sites-enabled/external
+        state: link
     - name: Add cron jobs
       cron:
         name: "{{ item.name }}"
