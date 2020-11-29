@@ -22,6 +22,10 @@
       copy:
         src: ./db_server/shell/
         dest: /root/shell/
+    - name: Copy .my.cnf
+      copy:
+        src: ./db_server/copy/root/.my.cnf
+        dest: /root/.my.cnf
     - name: Install apt packages
       apt:
         name:
@@ -68,14 +72,14 @@
             name: 日次データベースバックアップ,
             minute: "34",
             hour: "*",
-            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %d",
+            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%d",
           }
         - {
             name: 月次データベースバックアップ,
             minute: "10",
             hour: "15",
             day: "1",
-            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %m%d",
+            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%m\\%d",
           }
         - {
             name: 年次データベースバックアップ,
@@ -83,7 +87,7 @@
             hour: "19",
             day: "1",
             month: "1",
-            job: "sh /root/shell/backup.sh {{ mysql.root.password }} {{ backup_server.rsync.host }} %Y%m%d",
+            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%Y\\%m\\%d",
           }
   handlers:
     - name: restart mariadb
