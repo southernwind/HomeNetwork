@@ -65,6 +65,8 @@
         name: "{{ item.name }}"
         minute: "{{ item.minute }}"
         hour: "{{ item.hour }}"
+        day: "{{ item.day }}"
+        month: "{{ item.month }}"
         job: "{{ item.job }}"
         state: present
       with_items:
@@ -72,6 +74,8 @@
             name: 日次データベースバックアップ,
             minute: "34",
             hour: "*",
+            day: "*",
+            month: "*",
             job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%d",
           }
         - {
@@ -79,6 +83,7 @@
             minute: "10",
             hour: "15",
             day: "1",
+            month: "*",
             job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%m\\%d",
           }
         - {
