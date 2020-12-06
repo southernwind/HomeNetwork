@@ -22,6 +22,12 @@
             group: root,
           }
         - {
+            path: /opt/scraping-service,
+            state: directory,
+            owner: root,
+            group: root,
+          }
+        - {
             path: /var/www/html/dashboard,
             state: directory,
             owner: root,
@@ -126,6 +132,18 @@
         enabled: yes
       notify:
         - restart electric power monitor service
+    - name: Add scraping service
+      copy:
+        src: ./home_server/services/servicefiles/scraping.service
+        dest: /etc/systemd/system/scraping.service
+      notify:
+        - restart scraping service
+    - name: Enable scraping service
+      service:
+        name: scraping
+        enabled: yes
+      notify:
+        - restart scraping service
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
@@ -133,3 +151,5 @@
       service: name=back_end_api state=restarted
     - name: restart electric power monitor service
       service: name=electric_power_monitor state=restarted
+    - name: restart scraping service
+      service: name=scraping state=restarted
