@@ -10,12 +10,14 @@ services:
       - 10050:10050
     volumes:
       - ./zabbix-server/mibs:/var/lib/zabbix/mibs
+    restart: always
   zabbix-web:
     build: ./zabbix-web
     env_file:
       - ./zabbix-web/env_file
     ports:
       - 8080:8080
+    restart: always
   zabbix-java-gateway:
     build: ./zabbix-java-gateway
   grafana:
@@ -26,5 +28,7 @@ services:
       - 3000:3000
     volumes:
       - ./data/grafana:/var/lib/grafana
+    restart: always
   rsyslog:
     build: ./rsyslog
+    restart: always

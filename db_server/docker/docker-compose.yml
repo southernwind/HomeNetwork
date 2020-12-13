@@ -9,3 +9,4 @@ services:
       - ./mariadb/env_file
     volumes:
       - ./data/mariadb:/var/lib/mysql
+    restart: always
