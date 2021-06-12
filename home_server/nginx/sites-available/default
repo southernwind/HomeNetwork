@@ -57,3 +57,10 @@ server{
         proxy_pass http://watch-server.localnet:3000;
     }
 }
+server{
+    listen 80;
+    server_name recorder.home-server.localnet;
+    location / {
+        proxy_pass http://recorder.localnet:8888;
+    }
+}
