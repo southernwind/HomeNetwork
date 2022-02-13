@@ -7,7 +7,6 @@ node {
     configFileProvider([configFile(fileId: 'a387649d-770b-40b3-8863-8dc851c476a0', targetLocation: 'raspi_dhcp/services/dhcp_assign_notifier/constants.py')]) {}
     configFileProvider([configFile(fileId: 'c2d55a3f-ec4b-45c3-8b3f-ff15ed21ba3f', targetLocation: 'group_vars/home.yaml')]) {}
     configFileProvider([configFile(fileId: '937aec52-0ffe-4840-b3a8-f725ce16b8ec', targetLocation: 'group_vars/db.yaml')]) {}
-    configFileProvider([configFile(fileId: '3038edd3-29b5-47e5-baf2-acc19a0f4dae', targetLocation: 'group_vars/game0.yaml')]) {}
     configFileProvider([configFile(fileId: '00822a4e-2506-42a6-ab2f-320c805c8cdc', targetLocation: 'group_vars/watch.yaml')]) {}
     configFileProvider([configFile(fileId: '007d1ea8-f543-45a2-b446-b52b3af1a3c5', targetLocation: 'home_server/nginx/sites-available/external')]) {}
     configFileProvider([configFile(fileId: '07960749-1250-4882-8653-b3127500f143', targetLocation: 'db_server/docker/mariadb/env_file')]) {}
@@ -26,10 +25,6 @@ node {
 
   stage('Ansible aquarium_raspi'){
     ansiblePlaybook credentialsId: '84abccbc-f317-430f-be13-ea3d41b7e713', inventory: 'inventory_jenkins', limit: 'aquarium', playbook: 'playbook.yaml'
-  }
-
-  stage('Ansible game_server0'){
-    ansiblePlaybook credentialsId: '58e2fbfc-eed4-4288-81c9-3b03e975fb25', inventory: 'inventory_jenkins', limit: 'game0', playbook: 'playbook.yaml'
   }
 
   stage('Ansible db_server'){

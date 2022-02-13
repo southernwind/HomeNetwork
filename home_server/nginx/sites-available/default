@@ -38,13 +38,6 @@ server{
 }
 server{
     listen 80;
-    server_name game0.home-server.localnet;
-    location / {
-        proxy_pass http://game-server0.localnet:8080;
-    }
-}
-server{
-    listen 80;
     server_name zabbix.home-server.localnet;
     location / {
         proxy_pass http://watch-server.localnet:8080;

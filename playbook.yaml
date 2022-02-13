@@ -4,8 +4,6 @@
   import_playbook: ./raspi_dhcp.yaml
 - name: aquarium
   import_playbook: ./aquarium.yaml
-- name: game_server0
-  import_playbook: ./game_server0.yaml
 - name: db_server
   import_playbook: ./db_server.yaml
 - name: watch_server
