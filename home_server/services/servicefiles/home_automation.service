@@ -1,0 +1,12 @@
+[Unit]
+Description = Home Automation
+
+[Service]
+WorkingDirectory=/opt/home-automation-service
+ExecStart=dotnet /opt/home-automation-service/HomeAutomation.dll
+Environment=DOTNET_CLI_HOME=./temp
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

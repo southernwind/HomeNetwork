@@ -28,6 +28,12 @@
             group: root,
           }
         - {
+            path: /opt/home-automation-service,
+            state: directory,
+            owner: root,
+            group: root,
+          }
+        - {
             path: /var/www/html/dashboard,
             state: directory,
             owner: root,
@@ -57,7 +63,7 @@
       apt:
         name:
           - apt-transport-https
-          - dotnet-sdk-5.0
+          - dotnet-sdk-6.0
           - openjdk-11-jdk
           - jenkins
           - ansible
@@ -144,6 +150,18 @@
         enabled: yes
       notify:
         - restart scraping service
+    - name: Add home automation service
+      copy:
+        src: ./home_server/services/servicefiles/home_automation.service
+        dest: /etc/systemd/system/home_automation.service
+      notify:
+        - restart home automation service
+    - name: Enable home automation service
+      service:
+        name: home_automation
+        enabled: yes
+      notify:
+        - restart home automation service
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
@@ -153,3 +171,5 @@
       service: name=electric_power_monitor state=restarted
     - name: restart scraping service
       service: name=scraping state=restarted
+    - name: restart home automation service
+      service: name=home_automation state=restarted
