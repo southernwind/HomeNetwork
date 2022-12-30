@@ -91,6 +91,12 @@
         state: present
       with_items:
         - {
+            name: 財務情報定期更新,
+            minute: "*/10",
+            hour: "*",
+            job: 'curl --location --request POST ''http://dashboard-api.home-server.localnet/api/financial-api/post-update-by-span-request'' --header ''Content-Type: application/json'' --data-raw ''{"Days": 60}''',
+          }
+        - {
             name: oui更新,
             minute: "44",
             hour: "4",
