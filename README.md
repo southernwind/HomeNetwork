@@ -16,6 +16,8 @@ Ansibleを使いネットワークまわりの設定を行う。
         interface eth0
         static ip_address=10.0.0.2/20
         static routers=10.0.0.1
+        static domain_name_servers=8.8.8.8,2001:4860:4860::8888
+        static ip6_address=fe80::ae44:f2ff:fe70:3874/64
         ```
 
     - 公開鍵認証でpiユーザーにログインできるようにする。

@@ -40,7 +40,20 @@
         dest: /etc/nginx/sites-available/default
       notify:
         - restart nginx
-
+    - name: Install the package "radvd"
+      apt:
+        name: radvd
+        state: present
+    - name: Install the package "radvdump"
+      apt:
+        name: radvd
+        state: present
+    - name: Copy radvd.conf
+      copy:
+        src: ./raspi_dhcp/radvd/radvd.conf
+        dest: /etc/radvd.conf
+      notify:
+        - restart radvd
     - name: Install the package "php7.3"
       apt:
         name: php7.3
@@ -98,6 +111,12 @@
         enabled: yes
       notify:
         - restart dhcp_assign_notifier
+    - name: Enable radvd
+      service:
+        name: radvd
+        enabled: yes
+      notify:
+        - restart radvd
     - name: mkdir /var/lib/myscripts/
       file:
         path: /var/lib/myscripts/
@@ -123,6 +142,8 @@
       service: name=php7.3-fpm state=restarted
     - name: restart dhcp_assign_notifier
       service: name=dhcp_assign_notifier state=restarted
+    - name: restart radvd
+      service: name=radvd state=restarted
     - name: download oui.csv
       get_url:
         url: https://standards.ieee.org/develop/regauth/oui/oui.csv
