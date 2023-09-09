@@ -63,7 +63,7 @@
       apt:
         name:
           - apt-transport-https
-          - dotnet-sdk-6.0
+          - dotnet-sdk-7.0
           - openjdk-11-jdk
           - jenkins
           - ansible
