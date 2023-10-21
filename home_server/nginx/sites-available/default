@@ -52,6 +52,7 @@ server{
 }
 server{
     listen 80;
+    listen 8888;
     server_name recorder.home-server.localnet;
     location / {
         proxy_pass http://recorder.localnet:8888;
