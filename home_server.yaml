@@ -64,7 +64,7 @@
         name:
           - apt-transport-https
           - dotnet-sdk-7.0
-          - openjdk-11-jdk
+          - openjdk-21-jdk
           - jenkins
           - ansible
           - nginx
