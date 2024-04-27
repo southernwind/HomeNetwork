@@ -30,7 +30,7 @@
       apt:
         name:
           - docker-compose
-          - mariadb-client-10.3
+          - mariadb-client-10.6
           - python3-pymysql
         state: present
         update_cache: yes
