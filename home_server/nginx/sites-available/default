@@ -58,3 +58,14 @@ server{
         proxy_pass http://recorder.localnet:8888;
     }
 }
+
+server{
+    listen 80;
+    server_name rundeck.home-server.localnet;
+    location / {
+        proxy_pass http://batch-server.localnet:4440;
+        proxy_set_header X-Forwarded-Host $host:$server_port;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
