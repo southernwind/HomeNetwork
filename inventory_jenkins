@@ -12,3 +12,6 @@ db-server.localnet
 
 [watch]
 watch-server.localnet
+
+[batch]
+batch-server.localnet

@@ -8,3 +8,5 @@
   import_playbook: ./db_server.yaml
 - name: watch_server
   import_playbook: ./watch_server.yaml
+- name: batch_server
+  import_playbook: ./batch_server.yaml
