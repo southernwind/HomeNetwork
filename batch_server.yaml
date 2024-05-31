@@ -10,7 +10,7 @@
       apt:
         name:
           - dotnet-sdk-8.0
-          - openjdk-8-jdk
+          - openjdk-11-jdk
         state: present
         update_cache: yes
   handlers:
