@@ -109,3 +109,15 @@ sh execute.sh
     ssh raspi.localnet
     ssh ...全ホストやる
     ```
+
+# KVM Hostのネットワーク設定
+
+- ゲストのネットワークをブリッジする必要があるので以下を実行する。
+
+    ```
+    nmcli con add type bridge ifname for-kvm0
+    nmcli con modify bridge-for-kvm0 bridge.stp no
+    nmcli con modify bridge-for-kvm0 ipv4.method manual ipv4.address "10.0.0.7/20" ipv4.gateway "10.0.0.1" ipv4.dns "10.0.0.2"
+    nmcli con add type bridge-slave ifname enp2s0 master bridge-for-kvm0
+    nmcli con del netplan-enp2s0
+    ```
