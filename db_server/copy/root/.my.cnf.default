@@ -5,3 +5,6 @@ password=root
 [client]
 user=root
 password=root
+
+[mysqld]
+max_recursive_iterations = 20000
