@@ -2,98 +2,78 @@
   become: yes
   remote_user: db
   gather_facts: no
+
+  vars_files:
+    - secrets.yml  # ← パスワードとか変数まとめたファイル
+
   tasks:
     - name: Set timezone
       timezone:
         name: Asia/Tokyo
+
     - name: apt update
       apt:
         update_cache: yes
-    - name: mkdir
-      file: path={{ item.path }} state={{ item.state }} owner={{ item.owner }} group={{ item.group }} mode=0755
-      with_items:
-        - { path: /home/db/docker, state: directory, owner: db, group: db }
-        - { path: /root/shell/, state: directory, owner: root, group: root }
-    - name: Copy docker files
-      copy:
-        src: ./db_server/docker/
-        dest: /home/db/docker/
-    - name: Copy shell files
-      copy:
-        src: ./db_server/shell/
-        dest: /root/shell/
-    - name: Copy .my.cnf
-      copy:
-        src: ./db_server/copy/root/.my.cnf
-        dest: /root/.my.cnf
+
     - name: Install apt packages
       apt:
         name:
-          - docker-compose
-          - mariadb-client-10.6
-          - python3-pymysql
+          - postgresql
+          - postgresql-client
+          - python3-psycopg2
         state: present
         update_cache: yes
-    - name: docker-compose
-      docker_compose:
-        project_src: /home/db/docker
-        state: present
-    - name: create mariadb databases
-      mysql_db:
-        login_user: root
-        login_password: "{{ mysql.root.password }}"
+
+    - name: Ensure PostgreSQL service is enabled and started
+      service:
+        name: postgresql
+        enabled: yes
+        state: started
+
+    - name: Create PostgreSQL databases
+      community.postgresql.postgresql_db:
         login_host: "127.0.0.1"
+        login_user: postgres
+        login_password: "{{ postgres.root.password }}"
         name: "{{ item.name }}"
+        encoding: 'UTF8'
         state: present
-        encoding: utf8mb4
-      with_items:
-        - "{{ mysql.databases }}"
-    - name: create mariadb users
-      mysql_user:
-        login_user: root
-        login_password: "{{ mysql.root.password }}"
+      loop: "{{ postgres.databases }}"
+
+    - name: Create PostgreSQL users
+      community.postgresql.postgresql_user:
         login_host: "127.0.0.1"
+        login_user: postgres
+        login_password: "{{ postgres.root.password }}"
         name: "{{ item.name }}"
         password: "{{ item.password }}"
-        priv: "{{ item.priv }}"
-        host: "%"
+        role_attr_flags: "LOGIN"
         state: present
-      with_items:
-        - "{{ mysql.users }}"
-    - name: Add cron jobs
-      cron:
-        name: "{{ item.name }}"
-        minute: "{{ item.minute }}"
-        hour: "{{ item.hour }}"
-        day: "{{ item.day }}"
-        month: "{{ item.month }}"
-        job: "{{ item.job }}"
+      loop: "{{ postgres.users }}"
+
+    - name: Attach priv to group roles on public schema
+      community.postgresql.postgresql_privs:
+        login_host: "127.0.0.1"
+        login_user: postgres
+        login_password: "{{ postgres.root.password }}"
+        database: "{{ item.name }}"
+        priv: ALL
+        type:  database
+        role: "{{ item.name }}"
         state: present
-      with_items:
-        - {
-            name: 日次データベースバックアップ,
-            minute: "34",
-            hour: "*",
-            day: "*",
-            month: "*",
-            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%d",
-          }
-        - {
-            name: 月次データベースバックアップ,
-            minute: "10",
-            hour: "15",
-            day: "1",
-            month: "*",
-            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%m\\%d",
-          }
-        - {
-            name: 年次データベースバックアップ,
-            minute: "34",
-            hour: "19",
-            day: "1",
-            month: "1",
-            job: "sh /root/shell/backup.sh {{ backup_server.rsync.host }} \\%Y\\%m\\%d",
-          }
-  handlers:
-    - name: restart mariadb
-      service: name=mariadb state=restarted
+      loop: "{{ postgres.users }}"
+
+    - name: Grant USAGE and CREATE privileges on schema public
+      community.postgresql.postgresql_privs:
+        login_host: "127.0.0.1"
+        login_user: postgres
+        login_password: "{{ postgres.root.password }}"
+        database: "{{ item.name }}"
+        role: "{{ item.name }}"
+        obj: public
+        type: schema
+        privs: USAGE,CREATE
+        state: present
+      loop: "{{ postgres.users }}"
+      loop_control:
+        label: "{{ item.name }}"
