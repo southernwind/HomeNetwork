@@ -35,7 +35,7 @@
           }
     - name: Download MS product repository
       get_url:
-        url: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+        url: https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb
         dest: /tmp/packages-microsoft-prod.deb
     - name: Install MS product repository
       apt:
@@ -57,7 +57,6 @@
       apt:
         name:
           - apt-transport-https
-          - dotnet-sdk-8.0
           - openjdk-17-jdk
           - jenkins
           - ansible
