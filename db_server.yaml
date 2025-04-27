@@ -3,9 +3,6 @@
   remote_user: db
   gather_facts: no
 
-  vars_files:
-    - secrets.yml  # ← パスワードとか変数まとめたファイル
-
   tasks:
     - name: Set timezone
       timezone:
