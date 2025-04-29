@@ -18,6 +18,7 @@
           - postgresql
           - postgresql-client
           - python3-psycopg2
+          - bzip2
         state: present
         update_cache: yes
 
